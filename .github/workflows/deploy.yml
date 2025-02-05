@@ -1,36 +1,13 @@
-name: Deploy and Test Workflow
+name: Deploy Workflow
 
 on:
-  push:
-    branches:
-      - dev
   pull_request:
     branches:
       - staging
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
-
   deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/staging'
 
     steps:
       - name: Checkout code
@@ -47,5 +24,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t yourusername/yourapp:staging .
-          docker push yourusername/yourapp:staging
+          docker build -t soufcode/lassiettefutee:staging .
+          docker push soufcode/lassiettefutee:staging
