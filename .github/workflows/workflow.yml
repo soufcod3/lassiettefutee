@@ -29,6 +29,8 @@ jobs:
         if: github.ref == 'refs/heads/staging'
         uses: ./.github/workflows/docker-staging.yml
   docker:
+    name: Docker Build and Push Staging
+    if: github.ref == 'refs/heads/staging'
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
