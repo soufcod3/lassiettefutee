@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    name: Testing with Jest
     runs-on: ubuntu-latest
 
     steps:
@@ -30,6 +31,7 @@ jobs:
         uses: ./.github/workflows/docker-staging.yml
   docker:
     name: Docker Build and Push Staging
+    needs: test
     if: github.ref == 'refs/heads/staging'
     runs-on: ubuntu-latest
     steps:
