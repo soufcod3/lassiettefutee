@@ -26,4 +26,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/2209-wns-hopper-raskolnicode-front:staging
+          tags: ${{ secrets.DOCKER_USERNAME }}/soufcode/lassiettefutee:staging

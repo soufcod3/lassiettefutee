@@ -1,9 +1,10 @@
-name: Test Workflow
+name: Jest
 
 on:
   push:
     branches:
       - dev
+      - staging
 
 jobs:
   test:
