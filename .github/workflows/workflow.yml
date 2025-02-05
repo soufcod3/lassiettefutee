@@ -26,9 +26,6 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Run docker-staging workflow
-        if: github.ref == 'refs/heads/staging'
-        uses: ./.github/workflows/docker-staging.yml
   docker:
     name: Docker Build and Push Staging
     needs: test
