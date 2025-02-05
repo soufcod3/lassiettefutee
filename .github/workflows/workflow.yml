@@ -49,4 +49,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/lassiettefutee:staging
+          tags: soufcode/lassiettefutee:staging
