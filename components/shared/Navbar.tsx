@@ -9,6 +9,7 @@ const Navbar = () => {
         <h1 className="text-md font-bold">
           L'Assiette Futée {isProduction ? "" : "(dev v1)"}
         </h1>
+        test
       </div>
     </div>
   );
