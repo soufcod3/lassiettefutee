@@ -7,9 +7,11 @@ const Navbar = () => {
     <div className="flex justify-center items-center p-4 bg-gray-200 h-16">
       <div className="flex items-center gap-2">
         <h1 className="text-md font-bold">
-          L'Assiette Futée {isProduction ? "" : "(dev v1)"}
+          L'Assiette Futée {isProduction ? "" : "(dev mode)"}
         </h1>
-        test
+        <small>
+          {process.env.NODE_ENV}
+        </small>
       </div>
     </div>
   );
