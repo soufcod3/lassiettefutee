@@ -14,8 +14,8 @@ RUN npm ci
 COPY . .
 
 # Set build environment (default to production)
-ARG NODE_ENV=production
-ENV NODE_ENV=$NODE_ENV
+# ARG NODE_ENV=production
+# ENV NODE_ENV=$NODE_ENV
 
 # Build the Next.js app
 RUN npm run build
@@ -31,7 +31,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules ./node_modules
 
 # Set environment variables for runtime
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 # Expose the port Next.js runs on
 EXPOSE 3000
