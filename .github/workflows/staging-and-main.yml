@@ -46,7 +46,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: soufcode/lassiettefutee:staging
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:staging
 
       - name: Build and push for main
         if: github.ref == 'refs/heads/main'
@@ -54,4 +54,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: soufcode/lassiettefutee:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest
