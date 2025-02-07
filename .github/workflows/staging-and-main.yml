@@ -1,16 +1,10 @@
 name: Test and Deploy
 
 on:
-  push:
-    branches:
-      - main
-      - staging
   pull_request:
     branches:
       - main
       - staging
-    types: [closed]  # Trigger only when the PR is closed (merged)
-    if: github.event.pull_request.merged == true  # Ensure it's a merged PR
 
 jobs:
   test:
