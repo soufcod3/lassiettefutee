@@ -75,3 +75,17 @@ body {
   top: -.5rem;
   right: -.5rem;
 }
+
+.floating-btn {
+  position: sticky;
+  z-index: 10;
+  bottom: 1rem;
+  right: 1rem;
+  margin-left: auto;
+  width: fit-content;
+  color: #fff;
+  padding: 1rem;
+  border-radius: .3rem;
+  background-color: #0f0f0f;
+}
+
