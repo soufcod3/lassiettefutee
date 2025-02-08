@@ -10,7 +10,7 @@ const Navbar = () => {
           L'Assiette Futée {isProduction ? "" : "(dev mode)"}
         </h1>
         <small>
-          hihi
+          hoho
         </small>
       </div>
     </div>
