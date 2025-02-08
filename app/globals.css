@@ -70,3 +70,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.badge-container {
+  top: -.5rem;
+  right: -.5rem;
+}
