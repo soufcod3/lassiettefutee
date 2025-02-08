@@ -8,7 +8,7 @@ const mulish = Mulish({
 });
 
 export const metadata: Metadata = {
-  title: "L'Assiette Futée v1",
+  title: "L'Assiette Futée - Compose ton assiette sur-mesure qui fait du bien à ton corps",
   description: "Compose et fais toi livrer tes assiettes préférées !",
 };
 
