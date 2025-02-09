@@ -1,6 +1,6 @@
 import Featured from "@/components/home/Featured";
 import Hero from "@/components/home/Hero";
-import FloatingBtn from "@/components/shared/FloatingBtn";
+import BottomBar from "@/components/shared/BottomBar";
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 
@@ -11,7 +11,9 @@ export default function Home() {
         <Hero />
         <Featured />
         <Footer />
-        <FloatingBtn />
+        <div className="sticky h-20 w-20 bg-red-500 bottom-2 right-2 ml-auto">
+          
+        </div>
       </div>
   );
 }
