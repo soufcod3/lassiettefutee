@@ -10,17 +10,11 @@ COPY package.json package-lock.json ./
 # Install dependencies
 RUN npm ci
 
-# Load secrets and persist them in ENV
-RUN --mount=type=secret,id=CLERK_PUBLISHABLE_KEY \
-    --mount=type=secret,id=CLERK_SECRET_KEY \
-    echo "CLERK_PUBLISHABLE_KEY=$(cat /run/secrets/CLERK_PUBLISHABLE_KEY)" >> /etc/environment && \
-    echo "CLERK_SECRET_KEY=$(cat /run/secrets/CLERK_SECRET_KEY)" >> /etc/environment
-
-# Copy the rest of the application
+# Copy the rest of the application (with .env.production created in the github action)
 COPY . .
 
 # Source environment variables and build
-RUN source /etc/environment && npm run build
+RUN npm run build
 
 # -- Production Stage --
 FROM node:18-alpine AS runner
