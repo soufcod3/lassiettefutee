@@ -3,9 +3,11 @@ import Hero from "@/components/home/Hero";
 import FloatingMenu from "@/components/shared/FloatingMenu";
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
+    <Suspense>
       <div className="bg-background relative">
         <Navbar />
         <Hero />
@@ -13,5 +15,6 @@ export default function Home() {
         <Footer />
         <FloatingMenu />
       </div>
+    </Suspense>
   );
 }

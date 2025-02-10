@@ -4,7 +4,7 @@ import { User2 } from "lucide-react";
 import { SignIn, SignUp, useUser } from '@clerk/nextjs'
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const FloatingMenu = () => {
 
@@ -45,7 +45,7 @@ const FloatingMenu = () => {
     }, [searchParams]);
 
     return (
-        <Suspense fallback={<div>Loading search params...</div>}>
+        <>
             <DynamicButton type={buttonType} handleOpen={handleOpen} />
 
             <Dialog open={buttonType === "se-connecter" && isOpen} onOpenChange={handleClose}>
@@ -55,7 +55,7 @@ const FloatingMenu = () => {
                     {drawerType === "creer-un-compte" && <SignUp routing="virtual" forceRedirectUrl="?drawer=se-connecter" signInUrl="?drawer=se-connecter" />}
                 </DialogContent>
             </Dialog>
-        </Suspense>
+        </>
     )
 }
 
