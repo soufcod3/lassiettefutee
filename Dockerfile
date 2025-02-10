@@ -13,6 +13,10 @@ RUN npm ci
 # Copy the rest of the application
 COPY . .
 
+RUN --mount=type=secret,id=CLERK_PUBLISHABLE_KEY \
+    --mount=type=secret,id=CLERK_SECRET_KEY \
+    echo "Clerk publishable and secret keys are being used in the build process"
+
 # Build the Next.js app
 RUN npm run build
 
