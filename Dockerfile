@@ -10,22 +10,17 @@ COPY package.json package-lock.json ./
 # Install dependencies
 RUN npm ci
 
+# Load secrets and persist them in ENV
 RUN --mount=type=secret,id=CLERK_PUBLISHABLE_KEY \
-  --mount=type=secret,id=CLERK_SECRET_KEY \
-   export CLERK_PUBLISHABLE_KEY=$(cat /run/secrets/CLERK_PUBLISHABLE_KEY) && \
-   export CLERK_SECRET_KEY=$(cat /run/secrets/CLERK_SECRET_KEY)
-
-
-RUN --mount=type=secret,id=CLERK_PUBLISHABLE_KEY \
---mount=type=secret,id=CLERK_SECRET_KEY \
-echo "CLERK_PUBLISHABLE_KEY starts with: $(head -c 5 /run/secrets/CLERK_PUBLISHABLE_KEY)" && \
-echo "CLERK_SECRET_KEY starts with: $(head -c 5 /run/secrets/CLERK_SECRET_KEY)"
+    --mount=type=secret,id=CLERK_SECRET_KEY \
+    echo "CLERK_PUBLISHABLE_KEY=$(cat /run/secrets/CLERK_PUBLISHABLE_KEY)" >> /etc/environment && \
+    echo "CLERK_SECRET_KEY=$(cat /run/secrets/CLERK_SECRET_KEY)" >> /etc/environment
 
 # Copy the rest of the application
 COPY . .
 
-# Build the Next.js app
-RUN npm run build
+# Source environment variables and build
+RUN source /etc/environment && npm run build
 
 # -- Production Stage --
 FROM node:18-alpine AS runner
