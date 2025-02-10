@@ -2,9 +2,9 @@
 
 import { User2 } from "lucide-react";
 import { SignIn, SignUp, useUser } from '@clerk/nextjs'
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const FloatingMenu = () => {
 
@@ -44,18 +44,19 @@ const FloatingMenu = () => {
         setDrawerType(searchParams.get("drawer") || null);
     }, [searchParams]);
 
-    return <>
-        <DynamicButton type={buttonType} handleOpen={handleOpen} />
+    return (
+        <Suspense fallback={<div>Loading search params...</div>}>
+            <DynamicButton type={buttonType} handleOpen={handleOpen} />
 
-        <Dialog open={buttonType === "se-connecter" && isOpen} onOpenChange={handleClose}>
-            <DialogContent className="flex justify-center items-center bg-transparent border-none">
-                <DialogTitle className="text-center hidden"></DialogTitle>
-                {drawerType === "se-connecter" && <SignIn routing="virtual" forceRedirectUrl="?drawer=creer-un-compte" withSignUp={false} signUpUrl="?drawer=creer-un-compte" />}
-                {drawerType === "creer-un-compte" && <SignUp routing="virtual" forceRedirectUrl="?drawer=se-connecter" signInUrl="?drawer=se-connecter" />}
-            </DialogContent>
-        </Dialog>
-
-    </>
+            <Dialog open={buttonType === "se-connecter" && isOpen} onOpenChange={handleClose}>
+                <DialogContent className="flex justify-center items-center bg-transparent border-none">
+                    <DialogTitle className="text-center hidden"></DialogTitle>
+                    {drawerType === "se-connecter" && <SignIn routing="virtual" forceRedirectUrl="?drawer=creer-un-compte" withSignUp={false} signUpUrl="?drawer=creer-un-compte" />}
+                    {drawerType === "creer-un-compte" && <SignUp routing="virtual" forceRedirectUrl="?drawer=se-connecter" signInUrl="?drawer=se-connecter" />}
+                </DialogContent>
+            </Dialog>
+        </Suspense>
+    )
 }
 
 const DynamicButton = ({ type, handleOpen }: { type: string, handleOpen: (type: string) => void }) => {
