@@ -35,8 +35,8 @@ jobs:
         uses: actions/checkout@v3
 
       - name: build image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:staging . --build-arg CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }} --build-arg CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
-      
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:staging . --build-arg CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }} --build-arg CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }} --no-cache
+
       - name: push image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:staging
       # - name: Login to Docker Hub
