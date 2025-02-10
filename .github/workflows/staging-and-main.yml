@@ -59,6 +59,11 @@ jobs:
             CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
             CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
 
+      - name: Debug Secrets (Check if they exist)
+        run: |
+          if [ -z "${{ secrets.CLERK_PUBLISHABLE_KEY }}" ]; then echo "CLERK_PUBLISHABLE_KEY is NOT set!"; else echo "CLERK_PUBLISHABLE_KEY is set!"; fi
+          if [ -z "${{ secrets.CLERK_SECRET_KEY }}" ]; then echo "CLERK_SECRET_KEY is NOT set!"; else echo "CLERK_SECRET_KEY is set!"; fi
+
       - name: Build and push for main
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v4

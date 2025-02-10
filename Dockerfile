@@ -15,6 +15,12 @@ RUN --mount=type=secret,id=CLERK_PUBLISHABLE_KEY \
    export CLERK_PUBLISHABLE_KEY=$(cat /run/secrets/CLERK_PUBLISHABLE_KEY) && \
    export CLERK_SECRET_KEY=$(cat /run/secrets/CLERK_SECRET_KEY)
 
+
+RUN --mount=type=secret,id=CLERK_PUBLISHABLE_KEY \
+--mount=type=secret,id=CLERK_SECRET_KEY \
+echo "CLERK_PUBLISHABLE_KEY starts with: $(head -c 5 /run/secrets/CLERK_PUBLISHABLE_KEY)" && \
+echo "CLERK_SECRET_KEY starts with: $(head -c 5 /run/secrets/CLERK_SECRET_KEY)"
+
 # Copy the rest of the application
 COPY . .
 
