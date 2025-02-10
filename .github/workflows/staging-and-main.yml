@@ -48,6 +48,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Create .env.production file
+        run: |
+          echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}" >> .env.production
+          echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> .env.production
+
+          # Mask secrets before logging
+          echo "::add-mask::${{ secrets.CLERK_PUBLISHABLE_KEY }}"
+          echo "::add-mask::${{ secrets.CLERK_SECRET_KEY }}"
+
+          # Log the contents of the .env.production file
+          cat .env.production
+
       - name: Build and push for staging
         if: github.ref == 'refs/heads/staging'
         uses: docker/build-push-action@v4
@@ -58,11 +70,6 @@ jobs:
           secrets: |
             CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
             CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
-
-      - name: Debug Secrets (Check if they exist)
-        run: |
-          if [ -z "${{ secrets.CLERK_PUBLISHABLE_KEY }}" ]; then echo "CLERK_PUBLISHABLE_KEY is NOT set!"; else echo "CLERK_PUBLISHABLE_KEY is set!"; fi
-          if [ -z "${{ secrets.CLERK_SECRET_KEY }}" ]; then echo "CLERK_SECRET_KEY is NOT set!"; else echo "CLERK_SECRET_KEY is set!"; fi
 
       - name: Build and push for main
         if: github.ref == 'refs/heads/main'
