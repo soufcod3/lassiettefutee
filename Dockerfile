@@ -13,10 +13,6 @@ RUN npm ci
 # Copy the rest of the application
 COPY . .
 
-RUN --mount=type=secret,id=CLERK_PUBLISHABLE_KEY \
-    --mount=type=secret,id=CLERK_SECRET_KEY \
-    echo "Clerk publishable and secret keys are being used in the build process"
-
 # Build the Next.js app
 RUN npm run build
 
@@ -35,6 +31,9 @@ COPY --from=builder /app/node_modules ./node_modules
 
 # Expose the port Next.js runs on
 EXPOSE 3000
+
+ENV CLERK_PUBLISHABLE_KEY=${CLERK_PUBLISHABLE_KEY}
+ENV CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
 
 # Run the application
 CMD ["node", "node_modules/.bin/next", "start"]
