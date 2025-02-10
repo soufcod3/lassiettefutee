@@ -10,8 +10,10 @@ COPY package.json package-lock.json ./
 # Install dependencies
 RUN npm ci
 
-ENV CLERK_PUBLISHABLE_KEY=$CLERK_PUBLISHABLE_KEY
-ENV CLERK_SECRET_KEY=$CLERK_SECRET_KEY
+RUN --mount=type=secret,id=CLERK_PUBLISHABLE_KEY \
+  --mount=type=secret,id=CLERK_SECRET_KEY \
+   export CLERK_PUBLISHABLE_KEY=$(cat /run/secrets/CLERK_PUBLISHABLE_KEY) && \
+   export CLERK_SECRET_KEY=$(cat /run/secrets/CLERK_SECRET_KEY)
 
 # Copy the rest of the application
 COPY . .
