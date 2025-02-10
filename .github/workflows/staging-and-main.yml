@@ -48,6 +48,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          env:
+            CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
+            CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:staging
           secrets: |
