@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import "../globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import { frFR } from '@clerk/localizations'
+
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -18,14 +21,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
-      <body
-        className={`${mulish.className} bg-zinc-950 flex justify-center items-center h-screen text-zinc-950`}
-      >
-        <div className="w-full h-screen sm:max-w-[375px] sm:h-[667px] sm:mx-auto sm:shadow-lg sm:rounded-xl bg-white overflow-scroll">
-          {children}
-        </div>
-      </body>
-    </html>
+    <ClerkProvider localization={frFR}>
+      <html lang="fr">
+        <body
+          className={`${mulish.className} bg-zinc-950 flex justify-center items-center h-screen text-zinc-950`}
+        >
+          <div className="w-full h-screen sm:max-w-[375px] sm:h-[667px] sm:mx-auto sm:shadow-lg sm:rounded-xl bg-white overflow-scroll">
+            {children}
+          </div>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
