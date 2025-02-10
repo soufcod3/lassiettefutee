@@ -13,9 +13,13 @@ RUN npm ci
 # Copy the rest of the application
 COPY . .
 
-# Set build environment (default to production)
-# ARG NODE_ENV=production
-# ENV NODE_ENV=$NODE_ENV
+# Define build argument
+ARG CLERK_PUBLISHABLE_KEY
+ARG CLERK_SECRET_KEY
+
+# Set environment variable using the build argument
+ENV CLERK_PUBLISHABLE_KEY=$CLERK_PUBLISHABLE_KEY
+ENV CLERK_SECRET_KEY=$CLERK_SECRET_KEY
 
 # Build the Next.js app
 RUN npm run build
