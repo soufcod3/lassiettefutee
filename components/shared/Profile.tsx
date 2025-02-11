@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
 import { useEffect } from "react";
-import { IUserData } from "@/lib/models/user.model";
+import { IUserData, IUserDb } from "@/lib/models/user.model";
 import { updateClerkUser } from "@/lib/actions/user.actions";
 import { PhoneIcon } from "lucide-react";
 
@@ -32,7 +32,13 @@ const Profile = ({ open, onOpenChange }: Props) => {
 
     // Fetched user from db
     // const userDb: IUserDb = await getUser(user?.id);
-    const userDb = {};
+    const userDb: IUserDb = {
+        _id: undefined,
+        lastname: "",
+        firstname: "",
+        email: "",
+        phone: undefined,
+    };
 
     // User full data
     const userData: IUserData = {
