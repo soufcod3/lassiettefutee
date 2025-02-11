@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { User2 } from "lucide-react";
 import { SignIn, SignUp, useUser } from '@clerk/nextjs'
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
@@ -13,7 +14,6 @@ const FloatingMenu = () => {
     const { isSignedIn } = useUser();
 
     const [buttonType, setButtonType] = useState<string>("se-connecter");
-    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const [drawerType, setDrawerType] = useState<string | null>(null);
 
@@ -26,14 +26,12 @@ const FloatingMenu = () => {
     }, [isSignedIn]);
 
     const handleOpen = (type: string) => {
-        setIsOpen(true);
         const params = new URLSearchParams(searchParams.toString());
         params.set("drawer", type);
         router.push(`?${params.toString()}`, { scroll: false });
     }
 
     const handleClose = () => {
-        setIsOpen(false);
         const params = new URLSearchParams(searchParams.toString());
         params.delete("drawer");
         router.push(`?${params.toString()}`, { scroll: false });

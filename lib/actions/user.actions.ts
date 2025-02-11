@@ -1,6 +1,6 @@
 "use server";
 
-import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { IUserData } from "../models/user.model";
 
 export const updateClerkUser = async (userData: IUserData) => {
@@ -20,6 +20,6 @@ export const updateClerkUser = async (userData: IUserData) => {
         console.log('res in action', res);
         return { message: res.publicMetadata }
       } catch (err) {
-        return { error: 'There was an error updating the user metadata.' }
+        return { error: 'There was an error updating the user metadata : ' + err }
       }
 }

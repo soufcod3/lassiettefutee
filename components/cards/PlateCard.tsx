@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Card, CardDescription, CardTitle, CardHeader, CardContent, CardFooter } from "../ui/card";
+import { Card, CardContent, CardFooter } from "../ui/card";
 import { BsFillStarFill } from "react-icons/bs";
 import { RiLeafFill } from "react-icons/ri";
 

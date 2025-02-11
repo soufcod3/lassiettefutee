@@ -1,4 +1,3 @@
-import Image from "next/image";
 import PlateCard from "../cards/PlateCard";
 import { plates } from "@/constants";
 

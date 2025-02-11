@@ -41,7 +41,7 @@ const Navbar = () => {
   return (<>
     <div className="flex justify-center items-center p-4 h-16">
       <h1 className="text-md font-bold">
-        L'Assiette Futée
+        L&apos;Assiette Futée
       </h1>
       <Button variant="ghost" className="absolute right-3" onClick={handleOpenProfile}>
         <Menu />
