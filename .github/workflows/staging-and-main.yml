@@ -53,13 +53,6 @@ jobs:
           echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}" >> .env.production
           echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> .env.production
 
-          # Mask secrets before logging
-          echo "::add-mask::${{ secrets.CLERK_PUBLISHABLE_KEY }}"
-          echo "::add-mask::${{ secrets.CLERK_SECRET_KEY }}"
-
-          # Log the contents of the .env.production file
-          cat .env.production
-
       - name: Build and push for staging
         if: github.ref == 'refs/heads/staging'
         uses: docker/build-push-action@v4
