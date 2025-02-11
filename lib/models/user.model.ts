@@ -10,6 +10,14 @@ export interface IUserData {
     phone: string | undefined;
 }
 
+export interface IUserDb {
+    _id: string | undefined;
+    lastname: string;
+    firstname: string;
+    email: string;
+    phone: string | undefined;
+}
+
 const userSchema = new mongoose.Schema({
     id: { type: String, required: true },
     username: { type: String, required: true, unique: true },
