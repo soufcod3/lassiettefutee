@@ -7,14 +7,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Profile from "./Profile";
 import { useUser } from "@clerk/nextjs";
 
-interface IUserDb {
-  _id: string;
-  lastname: string;
-  firstname: string;
-  email: string;
-  phone: string;
-}
-
 const Navbar = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
