@@ -48,7 +48,7 @@ const FloatingMenu = () => {
         <>
             <DynamicButton type={buttonType} handleOpen={handleOpen} />
 
-            <Dialog open={buttonType === "se-connecter" && isOpen} onOpenChange={handleClose}>
+            <Dialog open={searchParams.get("drawer") === "se-connecter" || searchParams.get("drawer") === "creer-un-compte"} onOpenChange={handleClose}>
                 <DialogContent className="flex justify-center items-center bg-transparent border-none">
                     <DialogTitle className="text-center hidden"></DialogTitle>
                     {drawerType === "se-connecter" && <SignIn routing="virtual" withSignUp={false} signUpUrl="?drawer=creer-un-compte" />}
