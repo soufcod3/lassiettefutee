@@ -1,6 +1,4 @@
 import { FaUser } from "react-icons/fa";
-import { DrawerHeader, DrawerContent, DrawerTrigger, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from "../ui/drawer";
-import { Button } from "../ui/button";
 
 const LoginBtn = () => {
     return (

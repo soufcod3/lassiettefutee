@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import { IUserData, IUserDb } from "@/lib/models/user.model";
 import { updateClerkUser } from "@/lib/actions/user.actions";
 import { PhoneIcon } from "lucide-react";
-
+import { z } from "zod";
 type Props = {
     open: boolean,
     onOpenChange: () => void
@@ -62,20 +62,28 @@ const Profile = ({ open, onOpenChange }: Props) => {
     }, [user])
     //// END USER MANAGEMENT
 
-    const form = useForm({
+    const form = useForm<{
+        lastname: string;
+        firstname: string;
+        email: string;
+        phone: string;
+    }>({
         resolver: zodResolver(UserValidation),
         defaultValues: {
             lastname: userData.lastname,
             firstname: userData.firstname,
             email: userData.email,
-            phone: userData.phone,
+            phone: userData.phone || "",
         }
     })
 
     const onSubmit = async (values: z.infer<typeof UserValidation>) => {
-        console.log(values);
         try {
-            await updateClerkUser(values);
+            await updateClerkUser({
+                ...values,
+                id: user?.id || "",
+                objectId: userDb?._id
+            });
         } catch (error) {
             console.log(error);
         }
