@@ -51,8 +51,8 @@ const FloatingMenu = () => {
             <Dialog open={buttonType === "se-connecter" && isOpen} onOpenChange={handleClose}>
                 <DialogContent className="flex justify-center items-center bg-transparent border-none">
                     <DialogTitle className="text-center hidden"></DialogTitle>
-                    {drawerType === "se-connecter" && <SignIn routing="virtual" forceRedirectUrl="?drawer=creer-un-compte" withSignUp={false} signUpUrl="?drawer=creer-un-compte" />}
-                    {drawerType === "creer-un-compte" && <SignUp routing="virtual" forceRedirectUrl="?drawer=se-connecter" signInUrl="?drawer=se-connecter" />}
+                    {drawerType === "se-connecter" && <SignIn routing="virtual" withSignUp={false} signUpUrl="?drawer=creer-un-compte" />}
+                    {drawerType === "creer-un-compte" && <SignUp routing="virtual" signInUrl="?drawer=se-connecter" />}
                 </DialogContent>
             </Dialog>
         </>
