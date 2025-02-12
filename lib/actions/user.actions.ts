@@ -3,6 +3,7 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { IUserData, User } from "../models/user.model";
 import { connectToDB } from "../mongoose";
+import { omit } from 'lodash';
 
 export const updateClerkUser = async (userData: IUserData) => {
     const { userId } = await auth();
@@ -59,6 +60,6 @@ export const getUserDb = async (id: string) => {
   const user = await User.findOne({ id }).lean();
   console.log("user", user);
   // dont return user with _id (plain object error)
-  const { _id, __v, ...userWithoutId } = user;
+  const userWithoutId = omit(user, ['_id', '__v']);
   return userWithoutId;
 }
