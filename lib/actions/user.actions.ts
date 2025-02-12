@@ -36,6 +36,8 @@ export const updateUserDb = async (userData: IUserData) => {
 
     return { message: true }; // cant return user with _id (plain object error)
   } catch (err) {
+    console.error("Digest:", err); // Log the digest to understand the error context
     return { error: 'There was an error updating the user : ' + err };
+
   }
 }

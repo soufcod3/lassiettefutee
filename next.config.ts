@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     dirs: ["components", "lib", "pages", "public"],
     ignoreDuringBuilds: true,
   },
+  productionBrowserSourceMaps: true,
 };
 
 export default nextConfig;
