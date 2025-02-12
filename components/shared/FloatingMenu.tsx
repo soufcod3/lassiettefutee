@@ -6,6 +6,7 @@ import { SignIn, SignUp, useUser } from '@clerk/nextjs'
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { updateSearchParams } from "@/lib/tools";
 
 const FloatingMenu = () => {
 
@@ -26,19 +27,14 @@ const FloatingMenu = () => {
     }, [isSignedIn]);
 
     const handleOpen = (type: string) => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set("drawer", type);
-        router.push(`?${params.toString()}`, { scroll: false });
+        updateSearchParams(router, "drawer", type);
     }
 
     const handleClose = () => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete("drawer");
-        router.push(`?${params.toString()}`, { scroll: false });
+        updateSearchParams(router, "drawer", null);
     }
 
     useEffect(() => {
-        console.log('searchParams', searchParams.get("drawer"));
         setDrawerType(searchParams.get("drawer") || null);
     }, [searchParams]);
 

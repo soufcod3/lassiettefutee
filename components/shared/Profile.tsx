@@ -10,15 +10,17 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IUserData, IUserDb } from "@/lib/models/user.model";
-import { updateClerkUser, updateUserDb } from "@/lib/actions/user.actions";
+import { getUserDb, updateClerkUser, updateUserDb } from "@/lib/actions/user.actions";
 import { PhoneIcon } from "lucide-react";
 import { z } from "zod";
+import { useUser } from "@/lib/hooks/useUser";
+import { updateSearchParams } from "@/lib/tools";
+import { useRouter } from "next/navigation";
 
 type Props = {
     open: boolean,
@@ -27,42 +29,8 @@ type Props = {
 
 const Profile = ({ open, onOpenChange }: Props) => {
 
-    //// USER MANAGEMENT
-    // Fetch user from clerk
-    const { user } = useUser();
-
-    // Fetched user from db
-    // const userDb: IUserDb = await getUser(user?.id);
-    
-    const userDb: IUserDb = {
-        _id: undefined,
-        lastname: "",
-        firstname: "",
-        email: "",
-        phone: undefined,
-    };
-
-    // User full data
-    const userData: IUserData = {
-        id: user?.id || "",
-        objectId: userDb?._id,
-        lastname: user?.lastName || userDb?.lastname,
-        firstname: user?.firstName || userDb?.firstname,
-        email: user?.emailAddresses[0].emailAddress || userDb?.email,
-        phone: user?.phoneNumbers[0]?.phoneNumber || userDb?.phone || "",
-    }
-
-    useEffect(() => { // because useUser is undefined when the component is mounted
-        if (user) {
-            form.reset({
-                lastname: user.lastName || undefined,
-                firstname: user.firstName || undefined,
-                email: user.emailAddresses[0].emailAddress,
-                phone: user.phoneNumbers[0]?.phoneNumber || "",
-            })
-        }
-    }, [user])
-    //// END USER MANAGEMENT
+    const { user, isLoading } = useUser(); 
+    const router = useRouter();
 
     const form = useForm<{
         lastname: string;
@@ -72,10 +40,10 @@ const Profile = ({ open, onOpenChange }: Props) => {
     }>({
         resolver: zodResolver(UserValidation),
         defaultValues: {
-            lastname: userData.lastname,
-            firstname: userData.firstname,
-            email: userData.email,
-            phone: userData.phone || "",
+            lastname: user?.lastname,
+            firstname: user?.firstname,
+            email: user?.email,
+            phone: user?.phone,
         }
     })
 
@@ -83,22 +51,30 @@ const Profile = ({ open, onOpenChange }: Props) => {
         try {
             await updateClerkUser({
                 ...values,
-                id: user?.id || "",
-                objectId: userDb?._id
+                id: user?.id || ""
             });
             await updateUserDb({
                 ...values,
-                id: user?.id || "",
-                objectId: userDb?._id
+                id: user?.id || ""
             });
+            updateSearchParams(router, "drawer", null);
         } catch (error) {
             console.log(error);
         }
     }
 
-    return (user &&
+    useEffect(() => {
+        form.reset({
+            lastname: user?.lastname,
+            firstname: user?.firstname,
+            email: user?.email,
+            phone: user?.phone,
+        })
+    }, [user])
+
+    return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-[300px] sm:max-w-[350px] rounded-lg">
+            <DialogContent className="max-w-fit sm:max-w-[350px] rounded-lg">
                 <DialogHeader>
                     <DialogTitle className="mb-3">Mon compte</DialogTitle>
                     <DialogDescription>
@@ -106,8 +82,15 @@ const Profile = ({ open, onOpenChange }: Props) => {
                     </DialogDescription>
                 </DialogHeader>
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                {isLoading ? (
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-row gap-4 justify-center items-center my-4">
+                            Chargement...
+                        </div>
+                    </div>
+                ) : (
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <div className="grid gap-4 py-4">
                             <div className="flex flex-col  gap-4">
                                 <div className="flex flex-row gap-4">
@@ -211,10 +194,11 @@ const Profile = ({ open, onOpenChange }: Props) => {
                                 <PhoneIcon className="w-3 h-3" />
                                 <a href="tel:+33600000000">Nous contacter</a>
                             </Button>
-                            <Button type="submit">Sauvegarder</Button>
+                            <Button type="submit" disabled={!form.formState.isValid}>Sauvegarder</Button>
                         </DialogFooter>
-                    </form>
-                </Form>
+                        </form>
+                    </Form>
+                )}
             </DialogContent>
         </Dialog>
     )

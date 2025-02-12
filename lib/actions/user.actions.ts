@@ -43,3 +43,22 @@ export const updateUserDb = async (userData: IUserData) => {
 
   }
 }
+
+export const getClerkUser = async () => {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("No Logged In User");
+  }
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  return user;
+}
+
+export const getUserDb = async (id: string) => {
+  await connectToDB();
+  const user = await User.findOne({ id }).lean();
+  console.log("user", user);
+  // dont return user with _id (plain object error)
+  const { _id, __v, ...userWithoutId } = user;
+  return userWithoutId;
+}

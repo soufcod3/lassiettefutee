@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 // User combined from clerk and db
 export interface IUserData {
     id: string;
-    objectId: string | undefined;
     lastname: string;
     firstname: string;
     email: string;
@@ -11,11 +10,12 @@ export interface IUserData {
 }
 
 export interface IUserDb {
-    _id: string | undefined;
+    id: string;
     lastname: string;
     firstname: string;
     email: string;
     phone: string | undefined;
+    phoneVerified: boolean;
 }
 
 const userSchema = new mongoose.Schema({
