@@ -7,6 +7,9 @@ import { connectToDB } from "../mongoose";
 export const updateClerkUser = async (userData: IUserData) => {
     const { userId } = await auth();
 
+    const authencitation = await auth();
+    console.log("authencitation", authencitation);
+
     if (!userId) {
         throw new Error("No Logged In User");
     }
@@ -29,14 +32,13 @@ export const updateUserDb = async (userData: IUserData) => {
 
   try {
     const user = await User.findOneAndUpdate(
-      { id: userData.id }, // Ensure you are searching by a unique identifier
+      { id: userData.id },
       userData,
-      { new: true, upsert: true } // `upsert: true` creates the user if it doesn't exist
+      { new: true, upsert: true }
     )
 
     return { message: true }; // cant return user with _id (plain object error)
   } catch (err) {
-    console.error("Digest:", err); // Log the digest to understand the error context
     return { error: 'There was an error updating the user : ' + err };
 
   }
