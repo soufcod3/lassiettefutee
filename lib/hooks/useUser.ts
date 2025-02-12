@@ -16,7 +16,7 @@ export const useUser = () => {
             if (user) {
                 try {
                     const fetchedUser = await getUserDb(user.id); // Fetch user from DB
-                    setUserDb(Array.isArray(fetchedUser) ? fetchedUser[0] : fetchedUser);
+                    setUserDb(fetchedUser);
                 } catch (error) {
                     console.error('Failed to fetch user data', error);
                 }

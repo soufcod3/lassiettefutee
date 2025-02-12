@@ -13,9 +13,8 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
-import { useEffect, useState } from "react";
-import { IUserData, IUserDb } from "@/lib/models/user.model";
-import { getUserDb, updateClerkUser, updateUserDb } from "@/lib/actions/user.actions";
+import { useEffect } from "react";
+import {  updateClerkUser, updateUserDb } from "@/lib/actions/user.actions";
 import { PhoneIcon } from "lucide-react";
 import { z } from "zod";
 import { useUser } from "@/lib/hooks/useUser";
@@ -70,7 +69,7 @@ const Profile = ({ open, onOpenChange }: Props) => {
             email: user?.email,
             phone: user?.phone,
         })
-    }, [user])
+    }, [user, form])
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>

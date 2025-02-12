@@ -1,7 +1,7 @@
 "use server";
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { IUserData, User } from "../models/user.model";
+import { IUserData, IUserDb, User } from "../models/user.model";
 import { connectToDB } from "../mongoose";
 import { omit } from 'lodash';
 
@@ -32,7 +32,7 @@ export const updateUserDb = async (userData: IUserData) => {
   await connectToDB();
 
   try {
-    const user = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { id: userData.id },
       userData,
       { new: true, upsert: true }
@@ -61,5 +61,5 @@ export const getUserDb = async (id: string) => {
   console.log("user", user);
   // dont return user with _id (plain object error)
   const userWithoutId = omit(user, ['_id', '__v']);
-  return userWithoutId;
+  return userWithoutId as IUserDb;
 }
