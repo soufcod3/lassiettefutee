@@ -20,19 +20,12 @@ export interface IUserDb {
 
 const userSchema = new mongoose.Schema({
     id: { type: String, required: true },
-    username: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
-    image: { type: String },
-    bio: { type: String },
-    threads: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Thread",
-    }],
-    onboarded: { type: Boolean, default: false },
-    communities: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Community",
-    }],
+    objectId: { type: String, required: true },
+    lastname: { type: String, required: true },
+    firstname: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: false },
+    phoneVerified: { type: Boolean, default: false },
 })
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);

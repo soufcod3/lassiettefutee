@@ -16,9 +16,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
 import { useEffect } from "react";
 import { IUserData, IUserDb } from "@/lib/models/user.model";
-import { updateClerkUser } from "@/lib/actions/user.actions";
+import { updateClerkUser, updateUserDb } from "@/lib/actions/user.actions";
 import { PhoneIcon } from "lucide-react";
 import { z } from "zod";
+
 type Props = {
     open: boolean,
     onOpenChange: () => void
@@ -32,6 +33,7 @@ const Profile = ({ open, onOpenChange }: Props) => {
 
     // Fetched user from db
     // const userDb: IUserDb = await getUser(user?.id);
+    
     const userDb: IUserDb = {
         _id: undefined,
         lastname: "",
@@ -80,6 +82,11 @@ const Profile = ({ open, onOpenChange }: Props) => {
     const onSubmit = async (values: z.infer<typeof UserValidation>) => {
         try {
             await updateClerkUser({
+                ...values,
+                id: user?.id || "",
+                objectId: userDb?._id
+            });
+            await updateUserDb({
                 ...values,
                 id: user?.id || "",
                 objectId: userDb?._id
