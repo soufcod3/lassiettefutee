@@ -26,15 +26,6 @@ export const useUser = () => {
         fetchUserData();
     }, [user]); // Re-fetch user data when Clerk user changes
 
-    // Return user data with fallbacks to ensure we have full user data
-    // const userData: IUserData | null = userDb ? {
-    //     id: user?.id || '',
-    //     lastname: user?.lastName || userDb.lastname || '',
-    //     firstname: user?.firstName || userDb.firstname || '',
-    //     email: user?.emailAddresses[0].emailAddress || userDb.email || '',
-    //     phone: user?.phoneNumbers[0]?.phoneNumber || userDb.phone || '',
-    // } : null;
-
     // useEffect to refresh userData
     useEffect(() => {
         if (userDb) {
