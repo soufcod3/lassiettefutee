@@ -74,7 +74,7 @@ const Profile = ({ open, onOpenChange }: Props) => {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-[300px] sm:max-w-[350px] rounded-lg">
+            <DialogContent className="max-w-fit sm:max-w-[350px] rounded-lg">
                 <DialogHeader>
                     <DialogTitle className="mb-3">Mon compte</DialogTitle>
                     <DialogDescription>
