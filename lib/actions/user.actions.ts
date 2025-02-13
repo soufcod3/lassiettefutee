@@ -8,9 +8,6 @@ import { omit } from 'lodash';
 export const updateClerkUser = async (userData: IUserData) => {
     const { userId } = await auth();
 
-    const authencitation = await auth();
-    console.log("authencitation", authencitation);
-
     if (!userId) {
         throw new Error("No Logged In User");
     }
@@ -57,8 +54,9 @@ export const getClerkUser = async () => {
 
 export const getUserDb = async (id: string) => {
   await connectToDB();
+
   const user = await User.findOne({ id }).lean();
-  console.log("user", user);
+
   // dont return user with _id (plain object error)
   const userWithoutId = omit(user, ['_id', '__v']);
   return userWithoutId as IUserDb;
