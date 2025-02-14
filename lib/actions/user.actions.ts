@@ -6,20 +6,15 @@ import { connectToDB } from "../mongoose";
 import { omit } from 'lodash';
 
 export const updateClerkUser = async (userData: IUserData) => {
-    const { userId } = await auth();
 
-    const authentication = await auth();
-    console.log('authentication', authentication)
-    console.log('process.env.CLERK_SECRET_KEY', process.env.CLERK_SECRET_KEY)
-
-    if (!userId) {
+    if (!userData.id) {
         throw new Error("No Logged In User");
     }
 
     const client = await clerkClient();
 
     try {
-        const res = await client.users.updateUser(userId, {
+        const res = await client.users.updateUser(userData.id, {
             lastName: userData.lastname,
             firstName: userData.firstname,
         })
@@ -47,7 +42,7 @@ export const updateUserDb = async (userData: IUserData) => {
 }
 
 export const getClerkUser = async () => {
-  const { userId } = await auth();
+  const { userId } = await auth(); // doesnt seem to work in production (null values)
   if (!userId) {
     throw new Error("No Logged In User");
   }
