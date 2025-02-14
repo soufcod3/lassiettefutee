@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+console.log('process.env.MONGODB_URL', process.env.MONGODB_URL)
+console.log('process.env.CLERK_SECRET_KEY', process.env.CLERK_SECRET_KEY)
+
 // User combined from clerk and db
 export interface IUserData {
     id: string;
