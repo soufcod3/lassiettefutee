@@ -8,6 +8,10 @@ import { omit } from 'lodash';
 export const updateClerkUser = async (userData: IUserData) => {
     const { userId } = await auth();
 
+    const authentication = await auth();
+    console.log('authentication', authentication)
+    console.log('process.env.CLERK_SECRET_KEY', process.env.CLERK_SECRET_KEY)
+
     if (!userId) {
         throw new Error("No Logged In User");
     }
