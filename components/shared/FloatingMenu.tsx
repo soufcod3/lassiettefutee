@@ -1,12 +1,10 @@
 "use client";
 
 import React from "react";
-import { User2 } from "lucide-react";
 import { SignIn, SignUp, useUser } from '@clerk/nextjs'
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-// import { updateSearchParams } from "@/lib/tools";
 import useDrawer from "@/app/store/drawer";
 import { setSearchParam } from "@/lib/tools";
 import Cart from "../drawers/Cart";
@@ -18,10 +16,6 @@ const FloatingMenu = () => {
     const handleOpenChange = () => {
         setSearchParam(router, "drawer", null);
     }
-
-    useEffect(() => {
-        console.log('drawerType in FloatingMenu', drawerType);
-    }, [drawerType])
 
     return (
         <>
@@ -51,7 +45,8 @@ const DrawerButton = () => {
         } else {
             setLabel("Se connecter");
         }
-    })
+    }, [isSignedIn])
+    
     const handleClick = () => {
         if (label === "Se connecter") {
             setSearchParam(router, "drawer", "se-connecter");

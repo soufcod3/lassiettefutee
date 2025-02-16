@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { setSearchParam } from "@/lib/tools"; // Fix: use normal function, not a hook
 import useDrawer from "@/app/store/drawer";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 ///// EXPLANATION /////
 // This component is used to initialize the drawer type
@@ -25,7 +24,7 @@ const DrawerManager = () => {
     } else {
       setDrawerType(null);
     }
-  }, [drawer]);
+  }, [drawer, setDrawerType]);
 
   return null;
 };
