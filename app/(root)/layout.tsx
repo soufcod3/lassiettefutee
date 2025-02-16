@@ -4,6 +4,7 @@ import "../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { frFR } from '@clerk/localizations'
 import DrawerManager from "@/components/shared/DrawerManager";
+import { Suspense } from "react";
 
 
 const mulish = Mulish({
@@ -28,10 +29,12 @@ export default function RootLayout({
         <body
           className={`${mulish.className} bg-zinc-950 flex justify-center items-center h-screen text-zinc-950`}
         >
-          <DrawerManager />
-          <div className="w-full h-screen sm:max-w-[375px] sm:h-[667px] sm:mx-auto sm:shadow-lg sm:rounded-xl bg-white overflow-scroll">
-            {children}
-          </div>
+          <Suspense>
+            <DrawerManager />
+            <div className="w-full h-screen sm:max-w-[375px] sm:h-[667px] sm:mx-auto sm:shadow-lg sm:rounded-xl bg-white overflow-scroll">
+              {children}
+            </div>
+          </Suspense>
         </body>
       </html>
     </ClerkProvider>
