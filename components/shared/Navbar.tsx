@@ -6,29 +6,22 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Profile from "./Profile";
 import { useUser } from "@clerk/nextjs";
+import { setSearchParam } from "@/lib/tools";
 
 const Navbar = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [drawerType, setDrawerType] = useState<string | null>(null);
+  
 
   const { user } = useUser();
 
   const handleOpenProfile = () => {
-    const params = new URLSearchParams(searchParams.toString());
-
     if (!user) {
-      params.set("drawer", "se-connecter");
-      router.push(`?${params.toString()}`, { scroll: false });
-      return;
-    }
-
-    if (params.get("drawer") === "mon-compte") {
-      params.delete("drawer");
+      setSearchParam(router, "drawer", "se-connecter");
     } else {
-      params.set("drawer", "mon-compte");
+      setSearchParam(router, "drawer", "mon-compte");
     }
-    router.push(`?${params.toString()}`, { scroll: false });
   }
 
   useEffect(() => {
@@ -49,10 +42,7 @@ const Navbar = () => {
     </div>
       {/* <UserButton /> clerk addon*/}
     {drawerType === "mon-compte" && <>
-      <Profile 
-        open={searchParams.get("drawer") === "mon-compte"} 
-        onOpenChange={handleOpenProfile} 
-      />
+      <Profile />
     </>}
   </>
   );

@@ -18,18 +18,21 @@ import {  updateClerkUser, updateUserDb } from "@/lib/actions/user.actions";
 import { PhoneIcon } from "lucide-react";
 import { z } from "zod";
 import { useUser } from "@/lib/hooks/useUser";
-import { updateSearchParams } from "@/lib/tools";
+// import { updateSearchParams } from "@/lib/tools";
 import { useRouter } from "next/navigation";
+import useDrawer from "@/app/store/drawer";
+import { setSearchParam } from "@/lib/tools";
 
-type Props = {
-    open: boolean,
-    onOpenChange: () => void
-}
+const Profile = () => {
 
-const Profile = ({ open, onOpenChange }: Props) => {
+    const { user, isLoading } = useUser();
 
-    const { user, isLoading } = useUser(); 
+    const { drawerType } = useDrawer();
     const router = useRouter();
+    
+    const handleOpenChange = () => {
+        setSearchParam(router, "drawer", null);
+    }
 
     const form = useForm<{
         lastname: string;
@@ -56,7 +59,7 @@ const Profile = ({ open, onOpenChange }: Props) => {
                 ...values,
                 id: user?.id || ""
             });
-            updateSearchParams(router, "drawer", null);
+            setSearchParam(router, "drawer", null);
         } catch (error) {
             console.log(error);
         }
@@ -72,7 +75,7 @@ const Profile = ({ open, onOpenChange }: Props) => {
     }, [user, form])
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog open={!!drawerType && drawerType === "mon-compte"} onOpenChange={handleOpenChange}>
             <DialogContent className="max-w-fit sm:max-w-[350px] rounded-lg">
                 <DialogHeader>
                     <DialogTitle className="mb-3">Mon compte</DialogTitle>
