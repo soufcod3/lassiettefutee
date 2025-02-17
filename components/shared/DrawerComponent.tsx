@@ -1,104 +1,93 @@
 "use client";
 
-import React from "react";
-import { SignIn, SignUp, useUser } from '@clerk/nextjs'
+import React, { useEffect, useState } from "react";
+import { SignIn, SignUp, useUser } from "@clerk/nextjs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import useDrawer from "@/app/store/drawer";
 import { setSearchParam } from "@/lib/tools";
 import Cart from "../drawers/Cart";
-import { DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
-import { Drawer } from "../ui/drawer";
+import { DrawerContent, DrawerHeader, DrawerTitle, Drawer } from "../ui/drawer";
 import useBetterMediaQuery from "@/lib/hooks/useBetterMediaQuery";
 
 const DrawerComponent = () => {
-
     const { drawerType } = useDrawer();
     const router = useRouter();
-    const handleOpenChange = () => {
-        setSearchParam(router, "drawer", null);
-    }
-
     const isDesktop = useBetterMediaQuery("(min-width: 640px)");
 
-    useEffect(() => {
-        console.log('isDesktop', isDesktop)
-    }, [isDesktop])
+    const handleOpenChange = () => setSearchParam(router, "drawer", null);
+    const isAuthModal = drawerType === "se-connecter" || drawerType === "creer-un-compte";
+    const isCartModal = drawerType === "panier";
 
     return (
         <>
             <DrawerButton />
 
-            {/* Login and Signup modal */}
-            <Dialog open={!!drawerType && (drawerType === "se-connecter" || drawerType === "creer-un-compte") || drawerType === "panier"} onOpenChange={handleOpenChange} >
-                <DialogContent className="flex justify-center items-center bg-transparent border-none">
-                    <DialogTitle className="text-center hidden"></DialogTitle>
-                    {drawerType === "se-connecter" && <SignIn routing="virtual" withSignUp={false} signUpUrl="?drawer=creer-un-compte" />}
-                    {drawerType === "creer-un-compte" && <SignUp routing="virtual" signInUrl="?drawer=se-connecter" />}
-                </DialogContent>
-            </Dialog>
-
-            {/* Modals for desktop */}
-            {
-                isDesktop ? <Dialog open={!!drawerType && (drawerType === "panier")} onOpenChange={handleOpenChange} >
-                    <DialogContent className="border-none h-50">
-                        <DialogHeader>
-                            <DialogTitle className="text-center">Mon panier</DialogTitle>
-                        </DialogHeader>
-                        <Cart />
+            {/* Authentication Modal */}
+            {isAuthModal && (
+                <Dialog open={true} onOpenChange={handleOpenChange}>
+                    <DialogContent className="flex justify-center items-center bg-transparent border-none">
+                        {drawerType === "se-connecter" && <SignIn routing="virtual" withSignUp={false} signUpUrl="?drawer=creer-un-compte" />}
+                        {drawerType === "creer-un-compte" && <SignUp routing="virtual" signInUrl="?drawer=se-connecter" />}
                     </DialogContent>
                 </Dialog>
-                    :
-                    <Drawer open={!!drawerType && (drawerType === "panier")} onOpenChange={handleOpenChange}>
+            )}
+
+            {/* Cart Modal (Desktop) / Drawer (Mobile) */}
+            {isCartModal && (
+                isDesktop ? (
+                    <Dialog open={true} onOpenChange={handleOpenChange}>
+                        <DialogContent className="border-none h-50">
+                            <DialogHeader>
+                                <DialogTitle className="text-center">Mon panier</DialogTitle>
+                            </DialogHeader>
+                            <Cart />
+                        </DialogContent>
+                    </Dialog>
+                ) : (
+                    <Drawer open={true} onOpenChange={handleOpenChange}>
                         <DrawerContent className="flex justify-center items-center bg-white border-none h-50">
                             <DrawerHeader>
                                 <DrawerTitle className="text-center">Mon panier</DrawerTitle>
                             </DrawerHeader>
-                                <Cart />
+                            <Cart />
                         </DrawerContent>
                     </Drawer>
-            }
+                )
+            )}
         </>
-    )
-}
+    );
+};
 
-// button component in order to refactor it and pass only children
 const DrawerButton = () => {
     const { isSignedIn } = useUser();
     const router = useRouter();
     const [label, setLabel] = useState("Se connecter");
 
     useEffect(() => {
-        if (isSignedIn) {
-            setLabel("Panier");
-        } else {
-            setLabel("Se connecter");
-        }
-    }, [isSignedIn])
+        setLabel(isSignedIn ? "Panier" : "Se connecter");
+    }, [isSignedIn]);
 
     const handleClick = () => {
-        if (label === "Se connecter") {
-            setSearchParam(router, "drawer", "se-connecter");
-        } else if (label === "Panier") {
-            setSearchParam(router, "drawer", "panier");
-        }
-    }
+        setSearchParam(router, "drawer", isSignedIn ? "panier" : "se-connecter");
+    };
 
-    return (<>
-        {/* only display on mobile */}
-        <div className="fixed bottom-4 right-4 z-50 block sm:hidden">
-            <div className="flex items-center gap-2 bg-black text-white hover:bg-zinc-900 p-3 py-4 rounded-md active:scale-95" role="button" onClick={handleClick}>
-                {label}
-            </div>
+    return (
+        <>
+            {/* Mobile Button */}
+            <ButtonContainer isMobile onClick={handleClick} label={label} />
+            {/* Desktop Button */}
+            <ButtonContainer onClick={handleClick} label={label} isMobile={false} />
+        </>
+    );
+};
+
+const ButtonContainer = ({ isMobile = false, onClick, label }: { isMobile: boolean, onClick: () => void, label: string }) => (
+    <div className={`fixed bottom-4 ${isMobile ? "right-4 block sm:hidden" : "left-1/2 -translate-x-1/2 hidden sm:block"} z-50`}>
+        <div className={`flex items-center gap-2 ${isMobile ? "bg-black text-white hover:bg-zinc-900" : "bg-white text-black hover:bg-gray-100"} p-3 py-4 rounded-md active:scale-95`} role="button" onClick={onClick}>
+            {label}
         </div>
-        {/* only display on desktop */}
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 hidden sm:block">
-            <div className="flex items-center gap-2 bg-white text-black hover:bg-gray-100 p-3 py-4 rounded-md active:scale-95" role="button" onClick={handleClick}>
-                {label}
-            </div>
-        </div>
-    </>
-    )
-}
+    </div>
+);
+
 export default DrawerComponent;
