@@ -2,14 +2,17 @@
 
 import React from "react";
 import { SignIn, SignUp, useUser } from '@clerk/nextjs'
-import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useDrawer from "@/app/store/drawer";
 import { setSearchParam } from "@/lib/tools";
 import Cart from "../drawers/Cart";
+import { DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
+import { Drawer } from "../ui/drawer";
+import useBetterMediaQuery from "@/lib/hooks/useBetterMediaQuery";
 
-const FloatingMenu = () => {
+const DrawerComponent = () => {
 
     const { drawerType } = useDrawer();
     const router = useRouter();
@@ -17,18 +20,45 @@ const FloatingMenu = () => {
         setSearchParam(router, "drawer", null);
     }
 
+    const isDesktop = useBetterMediaQuery("(min-width: 640px)");
+
+    useEffect(() => {
+        console.log('isDesktop', isDesktop)
+    }, [isDesktop])
+
     return (
         <>
             <DrawerButton />
 
+            {/* Login and Signup modal */}
             <Dialog open={!!drawerType && (drawerType === "se-connecter" || drawerType === "creer-un-compte") || drawerType === "panier"} onOpenChange={handleOpenChange} >
                 <DialogContent className="flex justify-center items-center bg-transparent border-none">
                     <DialogTitle className="text-center hidden"></DialogTitle>
                     {drawerType === "se-connecter" && <SignIn routing="virtual" withSignUp={false} signUpUrl="?drawer=creer-un-compte" />}
                     {drawerType === "creer-un-compte" && <SignUp routing="virtual" signInUrl="?drawer=se-connecter" />}
-                    {drawerType === "panier" && <Cart />}
                 </DialogContent>
             </Dialog>
+
+            {/* Modals for desktop */}
+            {
+                isDesktop ? <Dialog open={!!drawerType && (drawerType === "panier")} onOpenChange={handleOpenChange} >
+                    <DialogContent className="border-none h-50">
+                        <DialogHeader>
+                            <DialogTitle className="text-center">Mon panier</DialogTitle>
+                        </DialogHeader>
+                        <Cart />
+                    </DialogContent>
+                </Dialog>
+                    :
+                    <Drawer open={!!drawerType && (drawerType === "panier")} onOpenChange={handleOpenChange}>
+                        <DrawerContent className="flex justify-center items-center bg-white border-none h-50">
+                            <DrawerHeader>
+                                <DrawerTitle className="text-center">Mon panier</DrawerTitle>
+                            </DrawerHeader>
+                                <Cart />
+                        </DrawerContent>
+                    </Drawer>
+            }
         </>
     )
 }
@@ -46,7 +76,7 @@ const DrawerButton = () => {
             setLabel("Se connecter");
         }
     }, [isSignedIn])
-    
+
     const handleClick = () => {
         if (label === "Se connecter") {
             setSearchParam(router, "drawer", "se-connecter");
@@ -71,4 +101,4 @@ const DrawerButton = () => {
     </>
     )
 }
-export default FloatingMenu;
+export default DrawerComponent;
