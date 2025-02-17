@@ -1,7 +1,7 @@
 "use client"
 import Featured from "@/components/home/Featured";
 import Hero from "@/components/home/Hero";
-import FloatingMenu from "@/components/shared/FloatingMenu";
+import FloatingMenu from "@/components/shared/DrawerComponent";
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 
