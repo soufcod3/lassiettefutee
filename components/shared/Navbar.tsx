@@ -33,7 +33,9 @@ const Navbar = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    console.log('NEXT_PUBLIC_ENVIRONMENT', process.env.NEXT_PUBLIC_ENVIRONMENT);
+    console.warn('NEXT_PUBLIC_ENVIRONMENT', process.env.NEXT_PUBLIC_ENVIRONMENT);
+    console.error('NEXT_PUBLIC_ENVIRONMENT', process.env.NEXT_PUBLIC_ENVIRONMENT);
+
   }, []);
 
   return (<>
