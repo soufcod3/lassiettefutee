@@ -44,11 +44,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Create .env.production file
+      - name: Create .env.staging file
+        if: github.ref == 'refs/heads/staging'
         run: |
-          echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" >> .env.production
-          echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> .env.production
-          echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" >> .env.production
+          echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" >> .env.staging
+          echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> .env.staging
+          echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" >> .env.staging
+          echo "NEXT_PUBLIC_ENVIRONMENT=staging" >> .env.staging
 
       - name: Build and push for staging
         if: github.ref == 'refs/heads/staging'
@@ -61,7 +63,16 @@ jobs:
             NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
             CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
             MONGODB_URL=${{ secrets.MONGODB_URL }}
+            NEXT_PUBLIC_ENVIRONMENT=staging
 
+      - name: Create .env.production file
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" >> .env.production
+          echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> .env.production
+          echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" >> .env.production
+          echo "NEXT_PUBLIC_ENVIRONMENT=production" >> .env.production
+          
       - name: Build and push for main
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v4
@@ -73,3 +84,4 @@ jobs:
             NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
             CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
             MONGODB_URL=${{ secrets.MONGODB_URL }}
+            NEXT_PUBLIC_ENVIRONMENT=production
