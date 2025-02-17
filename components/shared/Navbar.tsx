@@ -32,6 +32,10 @@ const Navbar = () => {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    console.log('NEXT_PUBLIC_ENVIRONMENT', process.env.NEXT_PUBLIC_ENVIRONMENT);
+  }, []);
+
   return (<>
     <div className="flex justify-center items-center p-4 h-16">
       <h1 className="text-md font-bold">

@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 let isConnected = false;
 const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
-console.log("environment", environment);
 
 export const connectToDB = async () => {
     mongoose.set("strictQuery", true);
