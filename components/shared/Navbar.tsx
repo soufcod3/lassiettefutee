@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Menu } from "lucide-react";
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -33,10 +34,12 @@ const Navbar = () => {
   }, [searchParams]);
 
   return (<>
-    <div className="flex justify-center items-center p-4 h-16">
-      <h1 className="text-md font-bold">
-        L&apos;Assiette Futée
-      </h1>
+    <div className="flex justify-center items-center p-4 h-16 w-full">
+      <Link href="/">
+        <h1 className="text-md font-bold">
+          L&apos;Assiette Futée
+        </h1>
+      </Link>
       <Button variant="ghost" className="absolute right-3" onClick={handleOpenProfile}>
         <Menu />
       </Button>

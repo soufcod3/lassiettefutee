@@ -31,7 +31,7 @@ export default function RootLayout({
         >
           <Suspense>
             <DrawerManager />
-            <div className="w-full h-screen sm:max-w-[375px] sm:h-[667px] sm:mx-auto sm:shadow-lg sm:rounded-xl bg-white overflow-scroll">
+            <div className="w-full h-screen sm:max-w-[375px] sm:h-[667px] sm:mx-auto sm:shadow-lg sm:rounded-xl bg-white overflow-scroll relative">
               {children}
             </div>
           </Suspense>
