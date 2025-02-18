@@ -71,6 +71,10 @@ body {
   }
 }
 
+.bg-background {
+  background-color: #;
+}
+
 .badge-container {
   top: -.5rem;
   right: -.5rem;
@@ -89,3 +93,10 @@ body {
   background-color: #0f0f0f;
 }
 
+.w-18 {
+  width: 4.5rem;
+}
+
+.h-50 {
+  height: 12.5rem;
+}
