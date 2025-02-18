@@ -72,7 +72,7 @@ body {
 }
 
 .bg-background {
-  background-color: #;
+  background-color: #FFFBF1;
 }
 
 .badge-container {
@@ -99,4 +99,12 @@ body {
 
 .h-50 {
   height: 12.5rem;
+}
+
+.selected-ingredient {
+  border: 4px solid #3e3e3e;
+}
+
+.selected-comp {
+  border: 4px solid #d1d1d1;
 }
