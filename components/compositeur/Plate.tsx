@@ -52,7 +52,7 @@ const Ingredients = () => {
             {/* Carousel des ingrédients */}
             <div className="flex justify-center">
                 <div className="flex gap-3 overflow-x-auto px-5 pb-3">
-                    {ingredients[selectedCategory].map((ingredient, index) => (
+                    {ingredients[selectedCategory as keyof typeof ingredients].map((ingredient, index) => (
                         <div key={index} className="flex flex-col items-center justify-center">
                             <Card className="rounded-md aspect-square flex items-center justify-center w-20 h-20">
                                 <Image src={ingredient.image} alt={ingredient.name} width={70} height={70} />
