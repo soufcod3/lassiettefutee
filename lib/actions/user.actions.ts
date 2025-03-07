@@ -1,9 +1,10 @@
 "use server";
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { IUserData, IUserDb, User } from "../models/user.model";
+import { User } from "../models/user.model";
 import { connectToDB } from "../mongoose";
 import { omit } from 'lodash';
+import { IUserData, IUserDb } from "../types/user";
 
 export const updateClerkUser = async (userData: IUserData) => {
 

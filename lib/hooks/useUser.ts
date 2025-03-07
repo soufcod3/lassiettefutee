@@ -1,9 +1,7 @@
-// hooks/useUserData.ts
-
 import { useState, useEffect } from 'react';
 import { useUser as useClerkUser } from '@clerk/nextjs';
 import { getUserDb } from '@/lib/actions/user.actions'; // Adjust the path as needed
-import { IUserData, IUserDb } from '@/lib/models/user.model';
+import { IUserData, IUserDb } from '@/lib/types/user';
 
 export const useUser = () => {
     const [userDb, setUserDb] = useState<IUserDb | null>(null);
@@ -35,6 +33,8 @@ export const useUser = () => {
                 firstname: user?.firstName || userDb.firstname || '',
                 email: user?.emailAddresses[0].emailAddress || userDb.email || '',
                 phone: user?.phoneNumbers[0]?.phoneNumber || userDb.phone || '',
+                createdAt: userDb.createdAt,
+                updatedAt: userDb.updatedAt,
             });
         } else {
             setUserData({
@@ -43,6 +43,8 @@ export const useUser = () => {
                 firstname: user?.firstName || '',
                 email: user?.emailAddresses[0].emailAddress || '',
                 phone: user?.phoneNumbers[0]?.phoneNumber || '',
+                createdAt: new Date(),
+                updatedAt: new Date(),
             });
         }
     }, [user, userDb]);
