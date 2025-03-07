@@ -7,7 +7,6 @@ import Image from "next/image";
 import { TiRefresh } from "react-icons/ti";
 import { TiArrowBack } from "react-icons/ti";
 
-
 const emptyPlate = {
     1: null,
     2: null,
@@ -38,6 +37,7 @@ const PlateBuilder = () => {
 
     const [selectedCategory, setSelectedCategory] = useState<string>("Nos Viandes");
 
+    // TODO : get available ingredients from the database (stock > 0)
     const ingredients = [
         { name: "Boeuf", image: "/assets/ingredients/tenders.png", stock: 10, category: "meat" },
         { name: "Poisson", image: "/assets/ingredients/tenders.png", stock: 10, category: "meat" },
@@ -78,6 +78,14 @@ const PlateBuilder = () => {
     }
 
     const handleIngredientSelection = (ingredient: string) => {
+        // TODO : verify if ingredient has enough stock (IN A NEW FUNCTION)
+        // await refetchIngredients()
+        // const hasEnoughStock = ingredients.find((i) => i.name === ingredient)?.stock > 0;
+        // if (!hasEnoughStock) {
+        //     console.error("Produit épuisé"); TOAST
+        //     return;
+        // }
+
         if (selectedSlot) {
             addIngredientToSlot(ingredient, selectedSlot);
         } else {
@@ -90,12 +98,16 @@ const PlateBuilder = () => {
             setPlate({ ...plate, [slot]: ingredient });
             setSelectedIngredient(null);
             setSelectedSlot(null);
+
+            // TODO : update ingredient stock
         } else {
             console.error("Essaye de varier les ingrédients");
         }
     }
 
     const canAddIngredient = (ingredient: string) => {
+        // TODO : verify ingredient stock 
+        // then count how many times it's in the plate
         const ingredientCount = Object.values(plate).filter((item) => item === ingredient).length;
         return ingredientCount < 2;
     }
