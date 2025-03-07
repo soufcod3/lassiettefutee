@@ -4,9 +4,9 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { User } from "../models/user.model";
 import { connectToDB } from "../mongoose";
 import { omit } from 'lodash';
-import { IUserData, IUserDb } from "../types/user";
+import { IUserClerk, IUserDb } from "../types/user";
 
-export const updateClerkUser = async (userData: IUserData) => {
+export const updateClerkUser = async (userData: IUserClerk) => {
 
     if (!userData.id) {
         throw new Error("No Logged In User");
@@ -25,7 +25,7 @@ export const updateClerkUser = async (userData: IUserData) => {
       }
 }
 
-export const updateUserDb = async (userData: IUserData) => {
+export const updateUserDb = async (userData: IUserDb) => {
   await connectToDB();
 
   try {

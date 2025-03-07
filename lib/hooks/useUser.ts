@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useUser as useClerkUser } from '@clerk/nextjs';
 import { getUserDb } from '@/lib/actions/user.actions'; // Adjust the path as needed
-import { IUserData, IUserDb } from '@/lib/types/user';
+import { IUserClerk, IUserDb } from '@/lib/types/user';
 
 export const useUser = () => {
     const [userDb, setUserDb] = useState<IUserDb | null>(null);
     const { user } = useClerkUser(); // Fetch user data from Clerk
 
-    const [userData, setUserData] = useState<IUserData | null>(null);
+    const [userData, setUserData] = useState<IUserClerk | IUserDb | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -33,8 +33,8 @@ export const useUser = () => {
                 firstname: user?.firstName || userDb.firstname || '',
                 email: user?.emailAddresses[0].emailAddress || userDb.email || '',
                 phone: user?.phoneNumbers[0]?.phoneNumber || userDb.phone || '',
-                createdAt: userDb.createdAt,
-                updatedAt: userDb.updatedAt,
+                createdAt: user?.createdAt || userDb.createdAt,
+                updatedAt: user?.updatedAt || userDb.updatedAt,
             });
         } else {
             setUserData({
@@ -43,8 +43,8 @@ export const useUser = () => {
                 firstname: user?.firstName || '',
                 email: user?.emailAddresses[0].emailAddress || '',
                 phone: user?.phoneNumbers[0]?.phoneNumber || '',
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: user?.createdAt || new Date(),
+                updatedAt: user?.updatedAt || new Date(),
             });
         }
     }, [user, userDb]);

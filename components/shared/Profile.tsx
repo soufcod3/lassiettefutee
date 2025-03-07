@@ -53,11 +53,15 @@ const Profile = () => {
         try {
             await updateClerkUser({
                 ...values,
-                id: user?.id || ""
+                id: user?.id || "",
+                createdAt: user?.createdAt || new Date(),
+                updatedAt: user?.updatedAt || new Date()
             });
             await updateUserDb({
                 ...values,
-                id: user?.id || ""
+                id: user?.id || "",
+                createdAt: user?.createdAt || new Date(),
+                updatedAt: new Date()
             });
             setSearchParam(router, "drawer", null);
         } catch (error) {

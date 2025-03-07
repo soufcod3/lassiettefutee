@@ -1,5 +1,5 @@
 // User combined from clerk and db
-export interface IUserData {
+export interface IUserClerk {
     id: string;
     lastname: string;
     firstname: string;
