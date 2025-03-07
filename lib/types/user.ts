@@ -5,6 +5,8 @@ export interface IUserData {
     firstname: string;
     email: string;
     phone: string | undefined;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface IUserDb {
@@ -13,4 +15,6 @@ export interface IUserDb {
     firstname: string;
     email: string;
     phone: string | undefined;
+    createdAt: Date;
+    updatedAt: Date;
 }
