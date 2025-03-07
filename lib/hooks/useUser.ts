@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useUser as useClerkUser } from '@clerk/nextjs';
 import { getUserDb } from '@/lib/actions/user.actions'; // Adjust the path as needed
-import { IUserData, IUserDb } from '@/lib/models/user.model';
+import { IUserData, IUserDb } from '@/lib/types/user';
 
 export const useUser = () => {
     const [userDb, setUserDb] = useState<IUserDb | null>(null);
