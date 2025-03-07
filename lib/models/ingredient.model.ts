@@ -9,4 +9,4 @@ const ingredientSchema = new mongoose.Schema({
     nutrition: { type: Object, required: true },
 })
 
-export const Ingredient = mongoose.models?.Ingredient || mongoose.model("Ingredient", ingredientSchema);
+export const Ingredient = mongoose.models.Ingredient || mongoose.model("Ingredient", ingredientSchema);

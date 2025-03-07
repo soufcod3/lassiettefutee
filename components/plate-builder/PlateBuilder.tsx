@@ -6,6 +6,8 @@ import { Card } from "../ui/card";
 import Image from "next/image";
 import { TiRefresh } from "react-icons/ti";
 import { TiArrowBack } from "react-icons/ti";
+import getIngredientsFromDb from "@/lib/actions/ingredient.actions";
+import { useIngredients } from "@/lib/hooks/useIngredients";
 
 const emptyPlate = {
     1: null,
@@ -29,6 +31,8 @@ const categoryMapping = {
 
 const PlateBuilder = () => {
     const plateRef = useRef<HTMLDivElement | null>(null);
+    const { ingredients, loading, error, refetch } = useIngredients();
+
 
     const [selectedIngredient, setSelectedIngredient] = useState<string | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
@@ -38,21 +42,6 @@ const PlateBuilder = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>("Nos Viandes");
 
     // TODO : get available ingredients from the database (stock > 0)
-    const ingredients = [
-        { name: "Boeuf", image: "/assets/ingredients/tenders.png", stock: 10, category: "meat" },
-        { name: "Poisson", image: "/assets/ingredients/tenders.png", stock: 10, category: "meat" },
-        { name: "Pâtes", image: "/assets/ingredients/tenders.png", stock: 10, category: "carbs" },
-        { name: "Riz", image: "/assets/ingredients/tenders.png", stock: 10, category: "carbs" },
-        { name: "Pâtes", image: "/assets/ingredients/tenders.png", stock: 10, category: "carbs" },
-        { name: "Tomates", image: "/assets/ingredients/tenders.png", stock: 10, category: "vegetables" },
-        { name: "Oignons", image: "/assets/ingredients/tenders.png", stock: 10, category: "vegetables" },
-        { name: "Patates", image: "/assets/ingredients/tenders.png", stock: 10, category: "vegetables" },
-        { name: "Carottes", image: "/assets/ingredients/tenders.png", stock: 10, category: "vegetables" },
-        { name: "Tomates", image: "/assets/ingredients/tenders.png", stock: 10, category: "vegetables" },
-        { name: "Oignons", image: "/assets/ingredients/tenders.png", stock: 10, category: "vegetables" },
-        { name: "Patates", image: "/assets/ingredients/tenders.png", stock: 10, category: "vegetables" },
-        { name: "Carottes", image: "/assets/ingredients/tenders.png", stock: 10, category: "vegetables" },
-    ];
 
     // Unselect ingredient and slot when clicking outside
     useEffect(() => {
@@ -123,14 +112,20 @@ const PlateBuilder = () => {
             {/* Ingredients */}
             <div className="flex justify-center w-full">
                 <div className="flex gap-3 overflow-x-auto px-5 pb-3">
-                    {ingredients.filter((ingredient) => categoryMapping[ingredient.category as keyof typeof categoryMapping] === selectedCategory).map((ingredient, index) => (
-                        <div key={index} className="ingredient flex flex-col items-center justify-center" onClick={() => handleIngredientSelection(ingredient.name)} role="button">
-                            <Card className={`rounded-md aspect-square flex items-center justify-center w-20 h-20 bg-white border-gray-200 shadow-sm ${selectedIngredient === ingredient.name ? "selected-ingredient" : ""}`}>
-                                <Image src={ingredient.image} alt={ingredient.name} width={70} height={70} />
+                    {loading ? (
+                        <p className="text-center text-xs my-2">Récolte des ingrédients...</p>
+                    ) : !ingredients ? (
+                        <p className="text-center text-xs my-2">Aucun ingrédient disponible</p>
+                    ) : (
+                        ingredients.filter((ingredient) => categoryMapping[ingredient.category as keyof typeof categoryMapping] === selectedCategory).map((ingredient, index) => (
+                        <div key={index} className="ingredient flex flex-col items-center justify-center" onClick={() => handleIngredientSelection(ingredient.label)} role="button">
+                            <Card className={`rounded-md aspect-square flex items-center justify-center w-20 h-20 bg-white border-gray-200 shadow-sm ${selectedIngredient === ingredient.label ? "selected-ingredient" : ""}`}>
+                                <Image src={`/assets/ingredients/${ingredient.name}.png`} alt={ingredient.label} width={70} height={70} />
                             </Card>
-                            <p className="text-center text-xs my-1">{ingredient.name}</p>
-                        </div>
-                    ))}
+                            <p className="text-center text-xs my-1">{ingredient.label}</p>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
             {/* Plate and buttons */}
